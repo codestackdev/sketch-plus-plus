@@ -249,7 +249,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="CommandsContainer.cs" />
-    <Compile Include="SketchPlusPlusAuthAttribute.cs" />
     <Compile Include="SwAddin.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -279,12 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\offset-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Framework\Framework.csproj">
-      <Project>{451b36d1-79a5-48c4-af1f-79d6bff7f3e9}</Project>
-      <Name>Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\licenses.txt" />
