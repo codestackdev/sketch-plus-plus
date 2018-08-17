@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER" />
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="AddInRegGroup">
+            <Component Id="cmpC462611AE37D15DDF1CF876FA4D55F6B" Directory="INSTALLFOLDER" Guid="*">
+                <Class Id="{1082ED09-1FC8-4E34-8207-D260AE285812}" Context="InprocServer32" Description="CodeStack.Tools.Sw.SketchPlusPlus.Commands.OffsetWithFilletPageEventHandler" ThreadingModel="both" ForeignServer="mscoree.dll">
+                    <ProgId Id="CodeStack.Tools.Sw.SketchPlusPlus.Commands.OffsetWithFilletPageEventHandler" Description="CodeStack.Tools.Sw.SketchPlusPlus.Commands.OffsetWithFilletPageEventHandler" />
+                </Class>
+                <Class Id="{26D588DD-D3FD-45EF-8F35-A61656AA83E9}" Context="InprocServer32" Description="CodeStack.Tools.Sw.SketchPlusPlus.SwAddin" ThreadingModel="both" ForeignServer="mscoree.dll">
+                    <ProgId Id="CodeStack.Tools.Sw.SketchPlusPlus.SwAddin" Description="CodeStack.Tools.Sw.SketchPlusPlus.SwAddin" />
+                </Class>
+                <File Id="filE911626030A07A3CABBC2AA0A1A45E8E" KeyPath="yes" Source="$(var.SourceOutDir)\CodeStack.Tools.Sw.SketchPlusPlus.dll" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32\0.1.0.0" Name="Class" Value="CodeStack.Tools.Sw.SketchPlusPlus.Commands.OffsetWithFilletPageEventHandler" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32\0.1.0.0" Name="Assembly" Value="CodeStack.Tools.Sw.SketchPlusPlus, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32\0.1.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32\0.1.0.0" Name="CodeBase" Value="file:///[#filE911626030A07A3CABBC2AA0A1A45E8E]" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32" Name="Class" Value="CodeStack.Tools.Sw.SketchPlusPlus.Commands.OffsetWithFilletPageEventHandler" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32" Name="Assembly" Value="CodeStack.Tools.Sw.SketchPlusPlus, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{1082ED09-1FC8-4E34-8207-D260AE285812}\InprocServer32" Name="CodeBase" Value="file:///[#filE911626030A07A3CABBC2AA0A1A45E8E]" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32\0.1.0.0" Name="Class" Value="CodeStack.Tools.Sw.SketchPlusPlus.SwAddin" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32\0.1.0.0" Name="Assembly" Value="CodeStack.Tools.Sw.SketchPlusPlus, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32\0.1.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32\0.1.0.0" Name="CodeBase" Value="file:///[#filE911626030A07A3CABBC2AA0A1A45E8E]" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32" Name="Class" Value="CodeStack.Tools.Sw.SketchPlusPlus.SwAddin" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32" Name="Assembly" Value="CodeStack.Tools.Sw.SketchPlusPlus, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}\InprocServer32" Name="CodeBase" Value="file:///[#filE911626030A07A3CABBC2AA0A1A45E8E]" Type="string" Action="write" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Installer" Language="1033" Version="0.1.0.0" Manufacturer="CodeStack" UpgradeCode="c5203ddd-0758-4bf6-94a5-e946123129c5">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of Sketch++ is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="AddInRegGroup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="AddInRegGroup"/>
+		</Feature>
+
+		<Icon Id="MainIconId" SourceFile="Resources\main_icon.ico"/>
+		<UIRef Id="WixUI_InstallDir" />
+		<UIRef Id="WixUI_Common" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+		<Property Id="ARPPRODUCTICON" Value="MainIconId" />
+		<WixVariable Id="WixUILicenseRtf" Value="Resources\eula.rtf" />
+		<WixVariable Id="WixUIBannerBmp" Value="Resources\banner.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="Resources\dialog.bmp" />
+
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFiles64Folder">
+				<Directory Id ="CodeStackId" Name ="CodeStack">
+					<Directory Id="INSTALLFOLDER" Name="Sketch++" />
+				</Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="Reg" Guid="{B3AFB485-C3DB-4FA0-91C6-A2C046802228}">
+				<RegistryValue Root="HKCU" Key="Software\SolidWorks\AddInsStartup\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}" Value="1" Type="integer" Action="write" />
+				<RegistryValue Root="HKLM" Key="Software\SolidWorks\Addins\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}" Value="0" Type="integer" Action="write" />
+				<RegistryValue Root="HKLM" Key="Software\SolidWorks\Addins\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}" Name="Description" Value="Tools for sketches" Type="string" Action="write" />
+				<RegistryValue Root="HKLM" Key="Software\SolidWorks\Addins\{26D588DD-D3FD-45EF-8F35-A61656AA83E9}" Name="Title" Value="Sketch++" Type="string" Action="write" />
+			</Component>
+			<Component Id="interops" Guid="{8FBCDE73-2623-4856-B807-EBFDE5C19BD2}">
+				<File Id='SolidWorks.Interop.sldworks.dllID' Name='SolidWorks.Interop.sldworks.dll' Source ='$(var.SourceOutDir)\SolidWorks.Interop.sldworks.dll'/>
+				<File Id='SolidWorks.Interop.swconst.dllID' Name='SolidWorks.Interop.swconst.dll' Source ='$(var.SourceOutDir)\SolidWorks.Interop.swconst.dll'/>
+				<File Id='SolidWorks.Interop.swpublished.dllID' Name='SolidWorks.Interop.swpublished.dll' Source ='$(var.SourceOutDir)\SolidWorks.Interop.swpublished.dll'/>
+				<File Id='SolidWorksTools.dllID' Name='SolidWorksTools.dll' Source ='$(var.SourceOutDir)\SolidWorksTools.dll'/>
+			</Component>
+			<Component Id="data" Guid="{C4240A9C-B0C7-4893-80B0-A7D710F0A99A}">
+				<File Id='CodeStack.Tools.Sw.SketchPlusPlus.tlbID' Name='CodeStack.Tools.Sw.SketchPlusPlus.tlb' Source ='$(var.SourceOutDir)\CodeStack.Tools.Sw.SketchPlusPlus.tlb'/>
+				<File Id='CodeStack.Tools.Sw.SketchPlusPlus.dll.configID' Name='CodeStack.Tools.Sw.SketchPlusPlus.dll.config' Source ='$(var.SourceOutDir)\CodeStack.Tools.Sw.SketchPlusPlus.dll.config'/>
+			</Component>
+			<Component Id="thirdpty" Guid="{FD3730A4-E9F2-4D75-A9B7-77E1A452E725}">
+				<File Id='Auth.dllID' Name='Auth.dll' Source ='$(var.SourceOutDir)\Auth.dll'/>
+				<File Id='CodeStack.Dev.Sw.AddIn.dllID' Name='CodeStack.Dev.Sw.AddIn.dll' Source ='$(var.SourceOutDir)\CodeStack.Dev.Sw.AddIn.dll'/>
+				<File Id='CodeStack.VPages.Sw.dllID' Name='CodeStack.VPages.Sw.dll' Source ='$(var.SourceOutDir)\CodeStack.VPages.Sw.dll'/>
+				<File Id='CommonServiceLocator.dllID' Name='CommonServiceLocator.dll' Source ='$(var.SourceOutDir)\CommonServiceLocator.dll'/>
+				<File Id='IdentityModel.dllID' Name='IdentityModel.dll' Source ='$(var.SourceOutDir)\IdentityModel.dll'/>
+				<File Id='IdentityModel.OidcClient.dllID' Name='IdentityModel.OidcClient.dll' Source ='$(var.SourceOutDir)\IdentityModel.OidcClient.dll'/>
+				<File Id='Microsoft.Extensions.DependencyInjection.Abstractions.dllID' Name='Microsoft.Extensions.DependencyInjection.Abstractions.dll' Source ='$(var.SourceOutDir)\Microsoft.Extensions.DependencyInjection.Abstractions.dll'/>
+				<File Id='Microsoft.Extensions.Logging.Abstractions.dllID' Name='Microsoft.Extensions.Logging.Abstractions.dll' Source ='$(var.SourceOutDir)\Microsoft.Extensions.Logging.Abstractions.dll'/>
+				<File Id='Microsoft.Extensions.Logging.dllID' Name='Microsoft.Extensions.Logging.dll' Source ='$(var.SourceOutDir)\Microsoft.Extensions.Logging.dll'/>
+				<File Id='Microsoft.IdentityModel.Logging.dllID' Name='Microsoft.IdentityModel.Logging.dll' Source ='$(var.SourceOutDir)\Microsoft.IdentityModel.Logging.dll'/>
+				<File Id='Microsoft.IdentityModel.Tokens.dllID' Name='Microsoft.IdentityModel.Tokens.dll' Source ='$(var.SourceOutDir)\Microsoft.IdentityModel.Tokens.dll'/>
+				<File Id='Microsoft.Win32.Primitives.dllID' Name='Microsoft.Win32.Primitives.dll' Source ='$(var.SourceOutDir)\Microsoft.Win32.Primitives.dll'/>
+				<File Id='Newtonsoft.Json.dllID' Name='Newtonsoft.Json.dll' Source ='$(var.SourceOutDir)\Newtonsoft.Json.dll'/>
+				<File Id='System.AppContext.dllID' Name='System.AppContext.dll' Source ='$(var.SourceOutDir)\System.AppContext.dll'/>
+				<File Id='System.Console.dllID' Name='System.Console.dll' Source ='$(var.SourceOutDir)\System.Console.dll'/>
+				<File Id='System.Diagnostics.DiagnosticSource.dllID' Name='System.Diagnostics.DiagnosticSource.dll' Source ='$(var.SourceOutDir)\System.Diagnostics.DiagnosticSource.dll'/>
+				<File Id='System.Globalization.Calendars.dllID' Name='System.Globalization.Calendars.dll' Source ='$(var.SourceOutDir)\System.Globalization.Calendars.dll'/>
+				<File Id='System.IdentityModel.Tokens.Jwt.dllID' Name='System.IdentityModel.Tokens.Jwt.dll' Source ='$(var.SourceOutDir)\System.IdentityModel.Tokens.Jwt.dll'/>
+				<File Id='System.IO.Compression.dllID' Name='System.IO.Compression.dll' Source ='$(var.SourceOutDir)\System.IO.Compression.dll'/>
+				<File Id='System.IO.Compression.ZipFile.dllID' Name='System.IO.Compression.ZipFile.dll' Source ='$(var.SourceOutDir)\System.IO.Compression.ZipFile.dll'/>
+				<File Id='System.IO.FileSystem.dllID' Name='System.IO.FileSystem.dll' Source ='$(var.SourceOutDir)\System.IO.FileSystem.dll'/>
+				<File Id='System.IO.FileSystem.Primitives.dllID' Name='System.IO.FileSystem.Primitives.dll' Source ='$(var.SourceOutDir)\System.IO.FileSystem.Primitives.dll'/>
+				<File Id='System.Net.Http.dllID' Name='System.Net.Http.dll' Source ='$(var.SourceOutDir)\System.Net.Http.dll'/>
+				<File Id='System.Net.Sockets.dllID' Name='System.Net.Sockets.dll' Source ='$(var.SourceOutDir)\System.Net.Sockets.dll'/>
+				<File Id='System.Runtime.InteropServices.RuntimeInformation.dllID' Name='System.Runtime.InteropServices.RuntimeInformation.dll' Source ='$(var.SourceOutDir)\System.Runtime.InteropServices.RuntimeInformation.dll'/>
+				<File Id='System.Security.Cryptography.Algorithms.dllID' Name='System.Security.Cryptography.Algorithms.dll' Source ='$(var.SourceOutDir)\System.Security.Cryptography.Algorithms.dll'/>
+				<File Id='System.Security.Cryptography.Encoding.dllID' Name='System.Security.Cryptography.Encoding.dll' Source ='$(var.SourceOutDir)\System.Security.Cryptography.Encoding.dll'/>
+				<File Id='System.Security.Cryptography.Primitives.dllID' Name='System.Security.Cryptography.Primitives.dll' Source ='$(var.SourceOutDir)\System.Security.Cryptography.Primitives.dll'/>
+				<File Id='System.Security.Cryptography.X509Certificates.dllID' Name='System.Security.Cryptography.X509Certificates.dll' Source ='$(var.SourceOutDir)\System.Security.Cryptography.X509Certificates.dll'/>
+				<File Id='System.Text.Encodings.Web.dllID' Name='System.Text.Encodings.Web.dll' Source ='$(var.SourceOutDir)\System.Text.Encodings.Web.dll'/>
+				<File Id='System.Xml.ReaderWriter.dllID' Name='System.Xml.ReaderWriter.dll' Source ='$(var.SourceOutDir)\System.Xml.ReaderWriter.dll'/>
+				<File Id='Unity.Abstractions.dllID' Name='Unity.Abstractions.dll' Source ='$(var.SourceOutDir)\Unity.Abstractions.dll'/>
+				<File Id='Unity.Configuration.dllID' Name='Unity.Configuration.dll' Source ='$(var.SourceOutDir)\Unity.Configuration.dll'/>
+				<File Id='Unity.Container.dllID' Name='Unity.Container.dll' Source ='$(var.SourceOutDir)\Unity.Container.dll'/>
+				<File Id='Unity.Interception.Configuration.dllID' Name='Unity.Interception.Configuration.dll' Source ='$(var.SourceOutDir)\Unity.Interception.Configuration.dll'/>
+				<File Id='Unity.Interception.dllID' Name='Unity.Interception.dll' Source ='$(var.SourceOutDir)\Unity.Interception.dll'/>
+				<File Id='Unity.RegistrationByConvention.dllID' Name='Unity.RegistrationByConvention.dll' Source ='$(var.SourceOutDir)\Unity.RegistrationByConvention.dll'/>
+				<File Id='Unity.ServiceLocation.dllID' Name='Unity.ServiceLocation.dll' Source ='$(var.SourceOutDir)\Unity.ServiceLocation.dll'/>
+				<File Id='Xarial.Signal2Go.dllID' Name='Xarial.Signal2Go.dll' Source ='$(var.SourceOutDir)\Xarial.Signal2Go.dll'/>
+				<File Id='Xarial.Signal2Go.Services.Auth.Oidc.dllID' Name='Xarial.Signal2Go.Services.Auth.Oidc.dll' Source ='$(var.SourceOutDir)\Xarial.Signal2Go.Services.Auth.Oidc.dll'/>
+				<File Id='Xarial.Signal2Go.Services.UserSettings.dllID' Name='Xarial.Signal2Go.Services.UserSettings.dll' Source ='$(var.SourceOutDir)\Xarial.Signal2Go.Services.UserSettings.dll'/>
+				<File Id='Xarial.VPages.Framework.dllID' Name='Xarial.VPages.Framework.dll' Source ='$(var.SourceOutDir)\Xarial.VPages.Framework.dll'/>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
