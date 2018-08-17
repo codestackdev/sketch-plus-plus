@@ -35,6 +35,13 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus
             typeof(IOffsetWithFillet), typeof(OffsetWithFillet))]
         CreateSketchOffsetFillet,
 
+        [Title("Select Partial Chain")]
+        [Description("Selects the chain between two selected sketch segments")]
+        [Icon(typeof(Resources), nameof(Resources.main_icon))]
+        [SketchCommandItemInfo(true, true, swWorkspaceTypes_e.All,
+            typeof(IPartialChainSelector), typeof(PartialChainSelector))]
+        SelectPartialChain,
+
         [Title("About...")]
         [Description("About Sketch++")]
         [Icon(typeof(Resources), nameof(Resources.about_icon))]
@@ -42,29 +49,14 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus
             typeof(IAbout), typeof(AboutCommand))]
         About
     }
-
-    [Title("Sketch++")]
-    [Description("Sketch segment commands")]
-    [Icon(typeof(Resources), nameof(Resources.main_icon))]
-    [ContextMenuInfo(1, swSelectType_e.swSelSKETCHSEGS)]
-    public enum SketchSegmentContextMenuCommands_e
-    {
-        [Title("Select Partial Chain")]
-        [Description("Selects the chain between two selected sketch segments")]
-        [Icon(typeof(Resources), nameof(Resources.main_icon))]
-        [SketchCommandItemInfo(true, false, swWorkspaceTypes_e.All,
-            typeof(IPartialChainSelector), typeof(PartialChainSelector))]
-        SelectPartialChain
-    }
-
-    [Guid("d018f4c1-8838-4f8a-b1c0-4c8c09da204d"), ComVisible(true)]
+    
+    [Guid("26D588DD-D3FD-45EF-8F35-A61656AA83E9"), ComVisible(true)]
     [SwAddin(
         Description = "Sketch++",
         Title = "Sketch++",
         LoadAtStartup = true
         )]
-    public class SwAddin : SwAddInEx, IAddCommandGroupWithEnable<SketchCommands_e>,
-        IAddCommandGroupWithEnable<SketchSegmentContextMenuCommands_e>
+    public class SwAddin : SwAddInEx, IAddCommandGroupWithEnable<SketchCommands_e>
     {
         #region SolidWorks Registration
 
@@ -85,34 +77,27 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus
         #endregion
 
         private CommandsContainer m_CommandsContainer;
-        
+
         protected override bool OnConnect()
         {
-            m_CommandsContainer = new CommandsContainer(m_App,
-                typeof(SketchCommands_e),
-                typeof(SketchSegmentContextMenuCommands_e));
+            m_CommandsContainer = new CommandsContainer();
+            m_CommandsContainer.Error += OnError;
+            m_CommandsContainer.Load(m_App,
+                typeof(SketchCommands_e));
 
             return true;
+        }
+
+        private void OnError(string err)
+        {
+            m_App.SendMsgToUser2($"Sketch++: {err}", (int)swMessageBoxIcon_e.swMbStop, (int)swMessageBoxBtn_e.swMbOk);
         }
 
         public void Callback(SketchCommands_e cmd)
         {
             m_CommandsContainer.GetCommand(cmd).Execute();
         }
-
-        public void Enable(SketchSegmentContextMenuCommands_e cmd, ref CommandItemEnableState_e state)
-        {
-            if (!m_CommandsContainer.GetCommand(cmd).CanExecute())
-            {
-                state = CommandItemEnableState_e.DeselectDisable;
-            }
-        }
-
-        public void Callback(SketchSegmentContextMenuCommands_e cmd)
-        {
-            m_CommandsContainer.GetCommand(cmd).Execute();
-        }
-
+        
         public void Enable(SketchCommands_e cmd, ref CommandItemEnableState_e state)
         {
             if (!m_CommandsContainer.GetCommand(cmd).CanExecute())

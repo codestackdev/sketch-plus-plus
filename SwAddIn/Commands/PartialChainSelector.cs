@@ -24,22 +24,16 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus.Commands
 
             if (model != null)
             {
-                var sketch = model.SketchManager.ActiveSketch;
+                var selMgr = model.ISelectionManager;
 
-                if (sketch != null)
+                if (selMgr.GetSelectedObjectCount2(-1) == 2)
                 {
-                    var selMgr = model.ISelectionManager;
+                    var firstSeg = selMgr.GetSelectedObject6(1, -1) as ISketchSegment;
+                    var secondSeg = selMgr.GetSelectedObject6(2, -1) as ISketchSegment;
 
-                    if (selMgr.GetSelectedObjectCount2(-1) == 2)
+                    if (firstSeg != null && secondSeg != null)
                     {
-                        if (selMgr.GetSelectedObjectType3(1, -1) == (int)swSelectType_e.swSelSKETCHSEGS
-                            && selMgr.GetSelectedObjectType3(2, -1) == (int)swSelectType_e.swSelSKETCHSEGS)
-                        {
-                            var firstSeg = selMgr.GetSelectedObject6(1, -1) as ISketchSegment;
-                            var secondSeg = selMgr.GetSelectedObject6(2, -1) as ISketchSegment;
-
-                            return firstSeg.GetSketch() == secondSeg.GetSketch();
-                        }
+                        return firstSeg.GetSketch() == secondSeg.GetSketch();
                     }
                 }
             }

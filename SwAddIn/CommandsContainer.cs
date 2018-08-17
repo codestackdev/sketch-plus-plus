@@ -17,6 +17,8 @@ using Xarial.AppLaunchKit.Services.UserSettings;
 using Xarial.AppLaunchKit.Services.Logger;
 using Xarial.AppLaunchKit.Services.About;
 using System.Threading;
+using Xarial.AppLaunchKit.Services.Updates.Exceptions;
+using Xarial.AppLaunchKit.Services.Auth.Oidc.Exceptions;
 
 namespace CodeStack.Tools.Sw.SketchPlusPlus
 {
@@ -34,17 +36,22 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus
 
         private ServicesManager m_Kit;
 
-        public CommandsContainer(ISldWorks app, params Type[] cmdGroupTypes)
+        public event Action<string> Error;
+
+        public CommandsContainer()
         {
             Instance = this;
-
+        }
+        
+        internal void Load(ISldWorks app, params Type[] cmdGroupTypes)
+        {
             m_Kit = new ServicesManager(this.GetType().Assembly, new IntPtr(app.IFrameObject().GetHWnd()),
-                typeof(EulaService),
-                typeof(UpdatesService),
-                typeof(OpenIdConnectorService),
-                typeof(UserSettingsService),
-                typeof(SystemEventLogService),
-                typeof(AboutApplicationService));
+                            typeof(EulaService),
+                            typeof(UpdatesService),
+                            typeof(OpenIdConnectorService),
+                            typeof(UserSettingsService),
+                            typeof(SystemEventLogService),
+                            typeof(AboutApplicationService));
 
             m_Kit.HandleError += OnHandleError;
             m_Container = new UnityContainer();
@@ -71,16 +78,32 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus
 
             m_Kit.StartServices();
         }
-
+        
         private bool OnHandleError(Exception ex)
         {
+            var error = "";
+
+            if (ex is UpdatesCheckException)
+            {
+                error = "Failed to check for updates";
+            }
+            else if (ex is LoginFailedException)
+            {
+                error = "Failed to login";
+            }
+            else
+            {
+                error = "Generic error";
+            }
+
+            Error?.Invoke(error);
+
             return true;
         }
 
-        internal TCommand GetCommand<TCommand>()
-            where TCommand : ICommand
+        internal TService GetService<TService>()
         {
-            return m_Container.Resolve<TCommand>();
+            return m_Container.Resolve<TService>();
         }
 
         internal ICommand GetCommand(Enum cmdId)

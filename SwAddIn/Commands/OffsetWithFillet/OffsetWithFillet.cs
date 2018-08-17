@@ -1,4 +1,5 @@
 ﻿using CodeStack.Tools.Sw.SketchPlusPlus.Commands.Base;
+using CodeStack.Tools.Sw.SketchPlusPlus.Exceptions;
 using CodeStack.VPages.Sw;
 using CodeStack.VPages.Sw.Controls;
 using SolidWorks.Interop.sldworks;
@@ -59,10 +60,35 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus.Commands
             m_ActivePage = m_PmpBuilder.CreatePage(m_Data);
             m_OffsetBuilder = new OffsetBuilder(m_App, m_App.IActiveDoc2);
             m_ActivePage.Handler.DataChanged += OnDataChanged;
+            m_ActivePage.Handler.Closing += OnClosing;
             m_ActivePage.Handler.Closed += OnClosed;
             m_ActivePage.Page.Show2(0);
             m_OffsetBuilder.PreviewOffset(m_Data.Segments, m_Data.Offset,
-                    m_Data.InnerTipsRadius, m_Data.OuterTipsRadius);
+                    m_Data.InnerTipsRadius, m_Data.OuterTipsRadius, m_Data.Reverse);
+        }
+
+        private void OnClosing(swPropertyManagerPageCloseReasons_e reason, ClosingArg arg)
+        {
+            if (reason == swPropertyManagerPageCloseReasons_e.swPropertyManagerPageClose_Okay)
+            {
+                try
+                {
+                    m_OffsetBuilder.CreateOffset(m_Data.Segments, m_Data.Offset,
+                        m_Data.InnerTipsRadius, m_Data.OuterTipsRadius, m_Data.Reverse);
+                }
+                catch (UserException ex)
+                {
+                    arg.Cancel = true;
+                    arg.ErrorMessage = ex.Message;
+                    arg.ErrorTitle = "Offset Failed";
+                }
+                catch (Exception ex)
+                {
+                    arg.Cancel = true;
+                    arg.ErrorMessage = "Failed to generate the offset";
+                    arg.ErrorTitle = "Offset Failed";
+                }
+            }
         }
 
         private void OnClosed(swPropertyManagerPageCloseReasons_e reason)
@@ -71,7 +97,10 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus.Commands
 
             if (reason == swPropertyManagerPageCloseReasons_e.swPropertyManagerPageClose_Okay)
             {
-                //TODO: create offset
+                var offsetBody = m_OffsetBuilder.CreateOffset(m_Data.Segments, m_Data.Offset,
+                        m_Data.InnerTipsRadius, m_Data.OuterTipsRadius, m_Data.Reverse);
+                
+                m_OffsetBuilder.ConvertToSketchSegments(m_App.IActiveDoc2, offsetBody);
             }
 
             m_OffsetBuilder.Dispose();
@@ -82,7 +111,7 @@ namespace CodeStack.Tools.Sw.SketchPlusPlus.Commands
             try
             {
                 m_OffsetBuilder.PreviewOffset(m_Data.Segments, m_Data.Offset,
-                    m_Data.InnerTipsRadius, m_Data.OuterTipsRadius);
+                    m_Data.InnerTipsRadius, m_Data.OuterTipsRadius, m_Data.Reverse);
             }
             catch
             {
